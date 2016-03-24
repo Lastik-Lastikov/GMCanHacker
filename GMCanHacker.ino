@@ -1,3 +1,5 @@
+// test comment
+
 #include <SPI.h>
 #include <Wire.h>
 
@@ -106,13 +108,13 @@ void setup()
 
 void ReadSerial() {
 <<<<<<< HEAD
-  
+
 
  int val;
  int  canLen;
  byte data[8];
  byte id[4];
- 
+
 =======
 
  String canID;

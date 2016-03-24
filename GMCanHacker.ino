@@ -163,12 +163,15 @@ void readCanAndSendToSerial() {
 void processMessage() {
 
  
-    Serial.print(heady, DEC);
-    for (int i = 0; i < 8; i++) {
-      Serial.print(",");
-      Serial.print(message[i]);
+    Serial.print("T");
+    Serial.print(heady, HEX);
+    Serial.print("8");
+    for (int i = 0; i < 8; i++) 
+    {
+      Serial.print(message[i], HEX);
     }
-    Serial.println(",");
+    Serial.print("\r");
+
 
 
 }
@@ -180,8 +183,7 @@ void loop()
   if (Serial.available() > 0) {
     ReadSerial();
   }
-  
-   //Serial1.println("ok");
+
 
 }
 

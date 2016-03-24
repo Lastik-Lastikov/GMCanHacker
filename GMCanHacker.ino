@@ -69,6 +69,7 @@ byte byData[8]; // Allocate some space for the Bytes
 int index = 0;   // Index into array; where to store the Bytes
 char ch;
 String str;
+String inString = "";
 int counter;
 int type;
 int length;
@@ -107,42 +108,44 @@ void setup()
 }
 
 void ReadSerial() {
-<<<<<<< HEAD
-
-
- int val;
- int  canLen;
- byte data[8];
- byte id[4];
-
-=======
-
- String canID;
- char inchar;
- int  canLen;
- byte data[8];
-
->>>>>>> origin/master
- while (Serial.available() > 0)
+if (Serial.available() > 0)
   {
-    val = Serial.read();
-    delay(10);
-    if (val == 'T') {
-        for (int i=0; i<8; i++)
-        {
-        }
-        canLen = Serial.read();
-        Serial.readBytes(data, canLen);
-    if (can_send_29bit_message(id.toInt(), sizeof(data), data))
+    
+    ch = Serial.read(); // Read a Byte
+    if (ch == 'T')  //Find "T" flag
+    {
+      for (int i=0; i<8; i++) 
       {
-        Serial.println("suceeded");
+       ch = Serial.read();
+       str += ch;
+      }
+      long idData = strtol( &str[0], NULL, 16);//convert ASCII HEX to INT
+      int inChar = Serial.read();   //read data length 
+      if (isDigit(inChar)) {        //read data length
+      inString += (char)inChar;
+      }
+   
+     int length=inString.toInt(); // convert length  from char to int in bytes
+     for (int i=0; i<length; i++) //add data bytes to array
+      {
+        byData[i]=SerialReadHexByte();
+      }
+     
+     if (can_send_29bit_message(idData, sizeof(byData), byData)) //send to can
+      {
+        Serial1.println("suceeded");
       }
       else
       {
-        Serial.println("failed");
+        Serial1.println("failed");
       }
+      //clear variables
+     str="";
+     inString = ""; 
+     inChar=0;
+     memset(byData, 0, sizeof(byData));
+     idData =0;
     }
-
   }
 }
 
@@ -192,11 +195,10 @@ void processMessage() {
 }
 void loop()
 {
-//Если нужно сгенерировать сообшение
-// msgGen(12345678);
+
   readCanAndSendToSerial();
   if (Serial.available() > 0) {
-    ReadSerial();
+  ReadSerial();
   }
 
 

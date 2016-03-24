@@ -62,7 +62,7 @@ unsigned long heady;
 byte datalength;
 byte message[8];
 
-long id;
+//long id;
 byte byData[8]; // Allocate some space for the Bytes
 int index = 0;   // Index into array; where to store the Bytes
 char ch;
@@ -70,6 +70,10 @@ String str;
 int counter;
 int type;
 int length;
+ int val;
+ int  canLen;
+ byte data[8];
+ byte id[4];
 //int msgCount = 0;
 //int i2c_counter;
 //byte command[8]; //
@@ -103,22 +107,23 @@ void setup()
 
 void ReadSerial() {
   
- String canID;
- char inchar;
+
+ int val;
  int  canLen;
  byte data[8];
+ byte id[4];
  
  while (Serial.available() > 0)
-  {inchar = Serial.read();
+  {
+    val = Serial.read();
     delay(10);
-    if (inchar == 'T') {
-        for (int i = 0; i<8; i++)
+    if (val == 'T') {
+        for (int i=0; i<8; i++)
         {
-          canID += Serial.read();
         }
         canLen = Serial.read();
         Serial.readBytes(data, canLen);
-    if (can_send_29bit_message(canID.toInt(), sizeof(data), data))
+    if (can_send_29bit_message(id.toInt(), sizeof(data), data))
       {
         Serial.println("suceeded");
       }

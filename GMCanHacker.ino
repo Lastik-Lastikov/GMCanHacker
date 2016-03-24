@@ -73,7 +73,7 @@ int length;
 //int msgCount = 0;
 //int i2c_counter;
 //byte command[8]; //
-byte answer[32]; // 
+byte answer[32]; //
 
 boolean acc = false;
 
@@ -100,14 +100,13 @@ void setup()
   delay(250);
 }
 
-
 void ReadSerial() {
-  
+
  String canID;
  char inchar;
  int  canLen;
  byte data[8];
- 
+
  while (Serial.available() > 0)
   {inchar = Serial.read();
     delay(10);
@@ -127,7 +126,7 @@ void ReadSerial() {
         Serial.println("failed");
       }
     }
-    
+
   }
 }
 
@@ -162,11 +161,11 @@ void readCanAndSendToSerial() {
 
 void processMessage() {
 
- 
+
     Serial.print("T");
     Serial.print(heady, HEX);
     Serial.print("8");
-    for (int i = 0; i < 8; i++) 
+    for (int i = 0; i < 8; i++)
     {
       Serial.print(message[i], HEX);
     }
@@ -186,4 +185,3 @@ void loop()
 
 
 }
-

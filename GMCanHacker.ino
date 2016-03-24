@@ -1,5 +1,3 @@
-// test comment
-
 #include <SPI.h>
 #include <Wire.h>
 
@@ -66,23 +64,10 @@ byte message[8];
 
 //long id;
 byte byData[8]; // Allocate some space for the Bytes
-int index = 0;   // Index into array; where to store the Bytes
 char ch;
 String str;
 String inString = "";
-int counter;
-int type;
-int length;
- int val;
- int  canLen;
- byte data[8];
- byte id[4];
-//int msgCount = 0;
-//int i2c_counter;
-//byte command[8]; //
-byte answer[32]; //
 
-boolean acc = false;
 
 void setup()
 {

@@ -188,7 +188,7 @@ void do_connect() {
        Serial.print("V1001");
        Serial.print("\r");
     } else if (ch =='O')  {
-       ConnStstus = 1;
+       ConnStatus = 1;
      } 
      
   }
@@ -196,14 +196,15 @@ void do_connect() {
 void loop()
 {
   
-if (ConnStstus==1) {
+if (ConnStatus==1) {
   readCanAndSendToSerial();
   if (Serial.available() > 0) {
   ReadSerial();
   }
  else {
-  do_connect()
- }
+  do_connect();
+  }
 
 
+}
 }

@@ -61,6 +61,7 @@ byte extID;
 unsigned long heady;
 byte datalength;
 byte message[8];
+int ConnStatus=0; //connection status
 
 //long id;
 byte byData[8]; // Allocate some space for the Bytes
@@ -178,13 +179,31 @@ void processMessage() {
 
 
 }
+
+void do_connect() {
+
+  if (Serial.available() > 0) {
+    ch = Serial.read();
+    if (ch =='v') {
+       Serial.print("V1001");
+       Serial.print("\r");
+    } else if (ch =='O')  {
+       ConnStstus = 1;
+     } 
+     
+  }
+}
 void loop()
 {
-
+  
+if (ConnStstus==1) {
   readCanAndSendToSerial();
   if (Serial.available() > 0) {
   ReadSerial();
   }
+ else {
+  do_connect()
+ }
 
 
 }

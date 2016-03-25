@@ -103,7 +103,7 @@ void ReadSerial() {
     {
       for (int i=0; i<8; i++) 
       {
-        ch = Serial1.read();
+        ch = WaitAndRead();
         str += ch;
       }
       long idData = strtol( &str[0], NULL, 16);//convert ASCII HEX to INT
@@ -173,7 +173,9 @@ void processMessage() {
   Serial1.print(datalength);
   for (int i = 0; i < datalength; i++)
   {
-    Serial1.print(message[i], HEX);
+    char buffer[8];
+    sprintf(buffer, "%02x", message[i]); Serial1.print(buffer);
+
   }
   Serial1.print("\r");
 

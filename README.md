@@ -1,1 +1,1 @@
-This is Arduino sketch for sniffering GMLan bus with HanHacker Software and Arduino Leonardo + canBus Shield
+This is Arduino sketch for sniffering GMLan bus with CanHacker Software and Arduino Leonardo + canBus Shield

@@ -135,25 +135,25 @@ void mcp2515_init(uint16_t speed, byte initFilter)
     mcp2515_write_register(CNF1,0x00);
     mcp2515_write_register(CNF2,0x90);
     mcp2515_write_register(CNF3,0x02);
-    //mySerial.println("Speed 1mbps");
+    //mySerial1.println("Speed 1mbps");
     break;
   case 500:
     mcp2515_write_register(CNF1,0x01);
     mcp2515_write_register(CNF2,0x90);
     mcp2515_write_register(CNF3,0x02);
-    //mySerial.println("Speed 500kbps");
+    //mySerial1.println("Speed 500kbps");
     break;
   case 125:
     mcp2515_write_register(CNF1,0x07);
     mcp2515_write_register(CNF2,0x90);
     mcp2515_write_register(CNF3,0x02);
-    //mySerial.println("Speed 125kbps");
+    //mySerial1.println("Speed 125kbps");
     break;
   case 33:
     mcp2515_write_register(CNF1,0x09);
     mcp2515_write_register(CNF2,0xBE);
     mcp2515_write_register(CNF3,0x07);
- //   Serial.println("Speed 33kbps");
+ //   Serial1.println("Speed 33kbps");
     break;      
   }
 
@@ -185,7 +185,7 @@ void mcp2515_init(uint16_t speed, byte initFilter)
   Serial.println("Debug Enabled..");
   //} 
   //else {
-  //mySerial.println("Normal..");     
+  //mySerial1.println("Normal..");     
   // mcp2515_write_register(CANCTRL, 0x00);
   //}
 
@@ -194,7 +194,7 @@ void mcp2515_init(uint16_t speed, byte initFilter)
 
 void mcp2515_initFilters()
 {
-//  Serial.println("Init CAN Filters"); 
+//  Serial1.println("Init CAN Filters"); 
   // Enable filters. 
   mcp2515_write_register(RXB0CTRL,(1<<6)|(0<<5)|(1<<2)); //RXM1 and RXM0 para filter/mask on for extented IDs and rollover enabled
   //Bufer 1: Todos los msjes
@@ -210,7 +210,7 @@ void mcp2515_initFilters()
   mcp2515_write_ext_can_id(RXM1SIDH, 0x1FFFFFFF);
 
 }
-
+/*
 //-----------------------------------
 //Send Standard 11 bit Packet
 //-----------------------------------
@@ -299,7 +299,7 @@ byte can_send_11bit_message(uint16_t id, int length, byte packetdata[])
   digitalWrite(P_CS,HIGH);
   return 1;
 }
-
+*/
 //-----------------------------------
 //Send 29 bit message
 //-----------------------------------
@@ -308,8 +308,9 @@ byte can_send_29bit_message(uint32_t id, int length, byte packetdata[])
 {
   // Truncate id just in case.. 
   id = id & EXMASK;   
-  //  Serial.print("Header: ");
-  //  Serial.println(id, HEX);
+    Serial.print("Header: ");
+    Serial.print(id, HEX);
+    Serial.print(" | ");
   //  
 
   //Miramos que buffer esta libre
@@ -355,19 +356,19 @@ byte can_send_29bit_message(uint32_t id, int length, byte packetdata[])
     mcp2515_write_register(0x30,(0<<1)|(0<<0));  //Menor prioridad
     mcp2515_write_register(0x40,(0<<1)|(1<<0));
     mcp2515_write_register(0x50,(1<<1)|(0<<0));  //Mayor prioridad
-//    Serial.println("Buffer 0");
+    Serial.println("Buffer 0");
     break;
   case 0x41:
     mcp2515_write_register(0x30,(0<<1)|(1<<0));  
     mcp2515_write_register(0x40,(0<<1)|(0<<0));  //Menor prioridad
     mcp2515_write_register(0x50,(1<<1)|(0<<0));  //Mayor prioridad
-//    Serial.println("Buffer 1");
+    Serial.println("Buffer 1");
     break;
   case 0x51:
     mcp2515_write_register(0x30,(1<<1)|(0<<0));  //Mayor prioridad  
     mcp2515_write_register(0x40,(0<<1)|(1<<0));  
     mcp2515_write_register(0x50,(0<<1)|(0<<0));  //Menor prioridad
-//    Serial.println("Buffer 2");
+    Serial.println("Buffer 2");
     break;    
   }
   // write ID

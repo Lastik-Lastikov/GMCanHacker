@@ -74,6 +74,7 @@ void setup()
 {
 
   Serial.begin(115200);
+  Serial1.begin(115200);
   // set up pins for MCP2515
   pinMode(P_CS, OUTPUT);
   pinMode(P_SCK, OUTPUT);
@@ -87,26 +88,26 @@ void setup()
 
   delay(1000);
 
-  //  Serial.println("Init MCP2515");
+  //  Serial1.println("Init MCP2515");
   mcp2515_init(33, 0x00);  //Iinitialize MCP2515: 1Mbit/s, 500, 125 Kbits/s, 33kps with filters enabled.
   mcp2515_write_register(CANCTRL, 0x00);
   delay(250);
 }
 
 void ReadSerial() {
-if (Serial.available() > 0)
+if (Serial1.available() > 0)
   {
     
-    ch = Serial.read(); // Read a Byte
+    ch = Serial1.read(); // Read a Byte
     if (ch == 'T')  //Find "T" flag
     {
       for (int i=0; i<8; i++) 
       {
-       ch = Serial.read();
+       ch = Serial1.read();
        str += ch;
       }
       long idData = strtol( &str[0], NULL, 16);//convert ASCII HEX to INT
-      int inChar = Serial.read();   //read data length 
+      int inChar = Serial1.read();   //read data length 
       if (isDigit(inChar)) {        //read data length
       inString += (char)inChar;
       }
@@ -119,11 +120,11 @@ if (Serial.available() > 0)
      
      if (can_send_29bit_message(idData, sizeof(byData), byData)) //send to can
       {
-        Serial1.println("suceeded");
+        Serial.println("suceeded transmit");
       }
       else
       {
-        Serial1.println("failed");
+        Serial.println("failed");
       }
       //clear variables
      str="";
@@ -167,14 +168,14 @@ void readCanAndSendToSerial() {
 void processMessage() {
 
 
-    Serial.print("T");
-    Serial.print(heady, HEX);
-    Serial.print("8");
-    for (int i = 0; i < 8; i++)
+    Serial1.print("T");
+    Serial1.print(heady, HEX);
+    Serial1.print(datalength);
+    for (int i = 0; i < datalength; i++)
     {
-      Serial.print(message[i], HEX);
+      Serial1.print(message[i], HEX);
     }
-    Serial.print("\r");
+    Serial1.print("\r");
 
 
 
@@ -182,29 +183,36 @@ void processMessage() {
 
 void do_connect() {
 
-  if (Serial.available() > 0) {
-    ch = Serial.read();
-    if (ch =='v') {
-       Serial.print("V1001");
-       Serial.print("\r");
-    } else if (ch =='O')  {
-       ConnStatus = 1;
-     } 
+  if (Serial1.available() > 0) {
+    ch = Serial1.read();
+    delay(1000);
+        if (ch =='V' || ch=='v') {
+    
+           Serial1.print("V1001\r");
+           delay(1000);
+        } else if (ch =='O')  {
+           ConnStatus = 1;
+           delay(1000);
+    
+     
+         } 
      
   }
 }
 void loop()
 {
-  
+
 if (ConnStatus==1) {
+
   readCanAndSendToSerial();
-  if (Serial.available() > 0) {
+  if (Serial1.available() > 0) {
   ReadSerial();
   }
+}
  else {
   do_connect();
   }
 
 
-}
+
 }

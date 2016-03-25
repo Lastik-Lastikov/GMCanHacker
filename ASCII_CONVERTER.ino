@@ -1,9 +1,10 @@
+//convert ASCII HEX to integer
 byte WaitAndRead()
 {
-   while (Serial.available() == 0) {
+   while (Serial1.available() == 0) {
        // do nothing
    }
-   return (byte) Serial.read();
+   return (byte) Serial1.read();
 }
 
 int SerialReadHexDigit()
